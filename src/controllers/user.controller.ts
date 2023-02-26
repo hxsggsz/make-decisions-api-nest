@@ -9,21 +9,21 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CreateUserOptionsBody } from '../dtos/create-user-options-body';
-import { UserService } from '../user.service';
+import { UserRepository } from '../repository/user-repository';
 
 @Controller()
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userRepository: UserRepository) {}
 
   @Get('GetUser/:id')
   async GetUser(@Param('id') id: string) {
-    return await this.userService.GetUser(id);
+    return await this.userRepository.GetUser(id);
   }
 
   @Post('CreateUser')
   async CreateUser(@Body() body: CreateUserBody) {
     const { id } = body;
-    return await this.userService.CreateUser(id);
+    return await this.userRepository.CreateUser(id);
   }
 
   @Post('CreateOption/:userId')
@@ -32,7 +32,7 @@ export class UserController {
     @Body() body: CreateUserOptionsBody,
   ) {
     const { options } = body;
-    return await this.userService.AddOptionUser(options, userId);
+    return await this.userRepository.AddOptionUser(options, userId);
   }
 
   @Put('ChangeUserOption/:userId')
@@ -42,17 +42,17 @@ export class UserController {
   ) {
     const { options, id } = body;
 
-    return await this.userService.ChangeOptionUser(options, userId, id);
+    return await this.userRepository.ChangeOptionUser(options, userId, id);
   }
 
   @Delete('RemoveUserOption/:id')
   async RemoveOptionUser(@Param('id') id: string) {
-    return await this.userService.RemoveOptionUser(id);
+    return await this.userRepository.RemoveOptionUser(id);
   }
 
   @Put('vote/:id')
   async IncrementCounterUser(@Param('id') id: string) {
-    return await this.userService.IncrementCounterUser(id);
+    return await this.userRepository.IncrementCounterUser(id);
   }
 
   @Get('test')

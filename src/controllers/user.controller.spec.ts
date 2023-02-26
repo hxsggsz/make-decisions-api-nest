@@ -1,32 +1,46 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
-import { UserService } from '../user.service';
-import { CreateUserBody } from 'src/dtos/create-user-body';
+import { CreateUserBody } from '../dtos/create-user-body';
+import { UserRepository } from '../repository/user-repository';
+import { CreateUserOptionsBody } from 'src/dtos/create-user-options-body';
 
 const wrongUser: CreateUserBody = {
   id: 'wrong-user',
 };
+
 const newUser: CreateUserBody = {
   id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
 };
 
+const OptionUser: CreateUserOptionsBody = {
+  id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
+  options: 'new option',
+};
+
+const changedOptionUser: CreateUserOptionsBody = {
+  id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
+  options: 'change option',
+};
+
+const newVote = {
+  id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
+  votes: 1,
+};
 describe('UserController', () => {
   let userController: UserController;
-  let userService: UserService;
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
-      imports: [],
       providers: [
         {
-          provide: UserService,
+          provide: UserRepository,
           useValue: {
             GetUser: jest.fn().mockResolvedValue(newUser),
             CreateUser: jest.fn().mockResolvedValue(newUser),
-            AddOptionUser: jest.fn(),
-            ChangeOptionUser: jest.fn(),
+            AddOptionUser: jest.fn().mockResolvedValue(OptionUser),
+            ChangeOptionUser: jest.fn().mockResolvedValue(changedOptionUser),
             RemoveOptionUser: jest.fn(),
-            IncrementCounterUser: jest.fn(),
+            IncrementCounterUser: jest.fn().mockResolvedValue(newVote),
           },
         },
       ],
@@ -37,18 +51,13 @@ describe('UserController', () => {
 
   it('shoud render the controller', () => {
     expect(userController).toBeDefined();
-    expect(UserService).toBeDefined();
   });
 
   describe('Create user controller', () => {
     it('should create a new user', async () => {
-      const body: CreateUserBody = {
-        id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-      };
-      const result = await userController.CreateUser(body);
+      const result = await userController.CreateUser(newUser);
 
       expect(result).toEqual(newUser);
-      expect(userService.CreateUser).toHaveBeenCalledTimes(1);
     });
 
     it('should not create a new user', async () => {
@@ -67,16 +76,91 @@ describe('UserController', () => {
       const result = await userController.GetUser(id);
 
       expect(result.id).toEqual(id);
+      expect(result).toHaveBeenCalledTimes(1);
       expect(typeof result.id).toBe('string');
     });
 
     it('should get nothing with a wrong id', async () => {
-      jest
-        .spyOn(userController, 'CreateUser')
-        .mockRejectedValueOnce(new Error());
+      jest.spyOn(userController, 'CreateUser').mockRejectedValueOnce(wrongUser);
 
       expect(userController.CreateUser).not.toHaveBeenCalled();
-      expect(userController.CreateUser).rejects.toThrowError();
+      expect(userController.CreateUser).not.toEqual(wrongUser);
+    });
+  });
+
+  describe('create option controller', () => {
+    it('should create a new option', async () => {
+      const result = await userController.AddOptionUser(newUser.id, OptionUser);
+
+      expect(result).toEqual(OptionUser);
+      expect(result).toHaveBeenCalledTimes(1);
+      expect(typeof newUser.id).toBe('string');
+      expect(typeof OptionUser.options).toBe('string');
+    });
+
+    it('should not create a new user', async () => {
+      jest
+        .spyOn(userController, 'AddOptionUser')
+        .mockRejectedValueOnce(new Error());
+
+      expect(userController.AddOptionUser).not.toHaveBeenCalled();
+      expect(userController.AddOptionUser).rejects.toThrowError();
+    });
+  });
+
+  describe('change option controller', () => {
+    it('should change an current option', async () => {
+      const result = await userController.ChangeOptionUser(
+        newUser.id,
+        changedOptionUser,
+      );
+
+      expect(result).toEqual(changedOptionUser);
+      expect(result).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not change the option', async () => {
+      jest
+        .spyOn(userController, 'ChangeOptionUser')
+        .mockRejectedValueOnce(new Error());
+
+      expect(userController.ChangeOptionUser).not.toHaveBeenCalled();
+      expect(userController.ChangeOptionUser).rejects.toThrowError();
+    });
+  });
+
+  describe('remove option controller', () => {
+    it('should remove the option', async () => {
+      const result = await userController.RemoveOptionUser(newUser.id);
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should not change the option', async () => {
+      jest
+        .spyOn(userController, 'RemoveOptionUser')
+        .mockRejectedValueOnce(new Error());
+
+      expect(userController.RemoveOptionUser).not.toHaveBeenCalled();
+      expect(userController.RemoveOptionUser).rejects.toThrowError();
+    });
+  });
+
+  describe('increment counter controller', () => {
+    it('should by 1 the votes options', async () => {
+      const result = await userController.IncrementCounterUser(newUser.id);
+
+      expect(result).toEqual(newVote);
+      expect(typeof newVote.votes).toBe('number');
+    });
+
+    it('should not increment the votes', async () => {
+      jest
+        .spyOn(userController, 'IncrementCounterUser')
+        .mockRejectedValueOnce(new Error());
+
+      expect(userController.IncrementCounterUser).not.toHaveBeenCalled();
+      expect(userController.IncrementCounterUser).rejects.toThrowError();
     });
   });
 });
