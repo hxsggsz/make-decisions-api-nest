@@ -1,4 +1,4 @@
-import { CreateUserBody } from 'src/dtos/create-user-body';
+import { CreateUserBody } from '../dtos/create-user-body';
 import {
   Body,
   Controller,
@@ -8,51 +8,51 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { UserRepository } from 'src/repositories/user-repository';
-import { CreateUserOptionsBody } from 'src/dtos/create-user-options-body';
+import { CreateUserOptionsBody } from '../dtos/create-user-options-body';
+import { UserService } from '../user.service';
 
 @Controller()
 export class UserController {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userService: UserService) {}
 
   @Get('GetUser/:id')
   async GetUser(@Param('id') id: string) {
-    return await this.userRepository.getUser(id);
+    return await this.userService.GetUser(id);
   }
 
   @Post('CreateUser')
-  async CreateNewUser(@Body() body: CreateUserBody) {
+  async CreateUser(@Body() body: CreateUserBody) {
     const { id } = body;
-    return await this.userRepository.createUser(id);
+    return await this.userService.CreateUser(id);
   }
 
   @Post('CreateOption/:userId')
-  async addOptionUser(
+  async AddOptionUser(
     @Param('userId') userId: string,
     @Body() body: CreateUserOptionsBody,
   ) {
     const { options } = body;
-    return await this.userRepository.addOptionUser(options, userId);
+    return await this.userService.AddOptionUser(options, userId);
   }
 
   @Put('ChangeUserOption/:userId')
-  async changeOptionUser(
+  async ChangeOptionUser(
     @Param('userId') userId: string,
     @Body() body: CreateUserOptionsBody,
   ) {
     const { options, id } = body;
 
-    return await this.userRepository.changeOptionUser(options, userId, id);
+    return await this.userService.ChangeOptionUser(options, userId, id);
   }
 
   @Delete('RemoveUserOption/:id')
-  async removeOptionUser(@Param('id') id: string) {
-    return await this.userRepository.removeOptionUser(id);
+  async RemoveOptionUser(@Param('id') id: string) {
+    return await this.userService.RemoveOptionUser(id);
   }
 
   @Put('vote/:id')
-  async incrementVote(@Param('id') id: string) {
-    return await this.userRepository.IncrementCounterUser(id);
+  async IncrementCounterUser(@Param('id') id: string) {
+    return await this.userService.IncrementCounterUser(id);
   }
 
   @Get('test')

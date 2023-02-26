@@ -1,12 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/database/prisma.service';
-import { UserRepository } from '../user-repository';
+import { PrismaService } from './database/prisma.service';
+
 //usa os metodos abstratos do repository para executar as ações no banco
-@Injectable()
-export class PrismaUserRepository implements UserRepository {
+export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(id: string) {
+  async CreateUser(id: string) {
     return await this.prisma.user.create({
       data: {
         id,
@@ -14,7 +12,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async getUser(id: string) {
+  async GetUser(id: string) {
     return await this.prisma.user.findUnique({
       where: {
         id,
@@ -25,7 +23,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async addOptionUser(options: string, userId: string) {
+  async AddOptionUser(options: string, userId: string) {
     return await this.prisma.options.create({
       data: {
         options,
@@ -34,7 +32,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async changeOptionUser(options: string, id: string, userId: string) {
+  async ChangeOptionUser(options: string, id: string, userId: string) {
     return await this.prisma.options.update({
       where: {
         id,
@@ -46,7 +44,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async removeOptionUser(id: string) {
+  async RemoveOptionUser(id: string) {
     return await this.prisma.options.delete({
       where: {
         id,

@@ -2,6 +2,6 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateUserBody {
   @IsNotEmpty()
-  // @IsUUID()
+  @IsUUID()
   id: string;
 }
