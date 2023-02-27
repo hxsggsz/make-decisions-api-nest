@@ -1,31 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
-import { CreateUserBody } from '../dtos/create-user-body';
 import { UserRepository } from '../repository/user-repository';
-import { CreateUserOptionsBody } from 'src/dtos/create-user-options-body';
+import {
+  newUser,
+  OptionUser,
+  changedOptionUser,
+  newVote,
+  wrongUser,
+} from '../../mocks/controlller-mocks';
 
-const wrongUser: CreateUserBody = {
-  id: 'wrong-user',
-};
-
-const newUser: CreateUserBody = {
-  id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-};
-
-const OptionUser: CreateUserOptionsBody = {
-  id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-  options: 'new option',
-};
-
-const changedOptionUser: CreateUserOptionsBody = {
-  id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-  options: 'change option',
-};
-
-const newVote = {
-  id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-  votes: 1,
-};
 describe('UserController', () => {
   let userController: UserController;
   beforeEach(async () => {
@@ -76,7 +59,6 @@ describe('UserController', () => {
       const result = await userController.GetUser(id);
 
       expect(result.id).toEqual(id);
-      expect(result).toHaveBeenCalledTimes(1);
       expect(typeof result.id).toBe('string');
     });
 
@@ -93,7 +75,6 @@ describe('UserController', () => {
       const result = await userController.AddOptionUser(newUser.id, OptionUser);
 
       expect(result).toEqual(OptionUser);
-      expect(result).toHaveBeenCalledTimes(1);
       expect(typeof newUser.id).toBe('string');
       expect(typeof OptionUser.options).toBe('string');
     });
@@ -110,13 +91,9 @@ describe('UserController', () => {
 
   describe('change option controller', () => {
     it('should change an current option', async () => {
-      const result = await userController.ChangeOptionUser(
-        newUser.id,
-        changedOptionUser,
-      );
+      const result = await userController.ChangeOptionUser(changedOptionUser);
 
       expect(result).toEqual(changedOptionUser);
-      expect(result).toHaveBeenCalledTimes(1);
     });
 
     it('should not change the option', async () => {
@@ -131,7 +108,7 @@ describe('UserController', () => {
 
   describe('remove option controller', () => {
     it('should remove the option', async () => {
-      const result = await userController.RemoveOptionUser(newUser.id);
+      const result = await userController.RemoveOptionUser(OptionUser);
 
       expect(result).toBeUndefined();
     });

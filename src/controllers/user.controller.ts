@@ -35,28 +35,22 @@ export class UserController {
     return await this.userRepository.AddOptionUser(options, userId);
   }
 
-  @Put('ChangeUserOption/:userId')
-  async ChangeOptionUser(
-    @Param('userId') userId: string,
-    @Body() body: CreateUserOptionsBody,
-  ) {
+  @Put('ChangeUserOption')
+  async ChangeOptionUser(@Body() body: CreateUserOptionsBody) {
     const { options, id } = body;
 
-    return await this.userRepository.ChangeOptionUser(options, userId, id);
+    return await this.userRepository.ChangeOptionUser(options, id);
   }
 
-  @Delete('RemoveUserOption/:id')
-  async RemoveOptionUser(@Param('id') id: string) {
+  @Delete('RemoveUserOption')
+  async RemoveOptionUser(@Body() body: CreateUserOptionsBody) {
+    const { id } = body;
     return await this.userRepository.RemoveOptionUser(id);
   }
 
-  @Put('vote/:id')
-  async IncrementCounterUser(@Param('id') id: string) {
+  @Put('Vote')
+  async IncrementCounterUser(@Body() body: CreateUserOptionsBody) {
+    const { id } = body;
     return await this.userRepository.IncrementCounterUser(id);
-  }
-
-  @Get('test')
-  test() {
-    return 'test';
   }
 }

@@ -34,14 +34,13 @@ export class PrismaUserService {
     });
   }
 
-  async ChangeOptionUser(options: string, id: string, userId: string) {
+  async ChangeOptionUser(options: string, id: string) {
     return await this.prisma.options.update({
       where: {
         id,
       },
       data: {
         options,
-        userId,
       },
     });
   }
