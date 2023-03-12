@@ -8,8 +8,8 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { CreateUserOptionsBody } from '../dtos/create-user-options-body';
 import { UserRepository } from '../repository/user-repository';
+import { CreateUserOptionsBody } from '../dtos/create-user-options-body';
 
 @Controller()
 export class UserController {
@@ -26,13 +26,13 @@ export class UserController {
     return await this.userRepository.CreateUser(id);
   }
 
-  @Post('CreateOption/:userId')
+  @Post('CreateOption')
   async AddOptionUser(
-    @Param('userId') userId: string,
+    // @Param('userId') userId: string,
     @Body() body: CreateUserOptionsBody,
   ) {
-    const { options } = body;
-    return await this.userRepository.AddOptionUser(options, userId);
+    const { option, id } = body;
+    return await this.userRepository.AddOptionUser(option, id);
   }
 
   @Put('ChangeUserOption/:userId')
@@ -40,9 +40,9 @@ export class UserController {
     @Param('userId') userId: string,
     @Body() body: CreateUserOptionsBody,
   ) {
-    const { options, id } = body;
+    const { option, id } = body;
 
-    return await this.userRepository.ChangeOptionUser(options, userId, id);
+    return await this.userRepository.ChangeOptionUser(option, userId, id);
   }
 
   @Delete('RemoveUserOption/:id')

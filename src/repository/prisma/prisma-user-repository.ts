@@ -20,28 +20,32 @@ export class PrismaUserService {
         id,
       },
       include: {
-        options: true,
+        options: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
       },
     });
   }
 
-  async AddOptionUser(options: string, userId: string) {
+  async AddOptionUser(option: string, id: string) {
     return await this.prisma.options.create({
       data: {
-        options,
-        userId,
+        option,
+        User: { connect: { id } },
       },
     });
   }
 
-  async ChangeOptionUser(options: string, id: string, userId: string) {
+  async ChangeOptionUser(option: string, id: string, userId: string) {
     return await this.prisma.options.update({
       where: {
         id,
       },
       data: {
-        options,
-        userId,
+        option,
+        User: { connect: { id: userId } },
       },
     });
   }

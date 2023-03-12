@@ -17,7 +17,7 @@ model User {
 
 model Options {
   id        String   @id @unique @default(uuid())
-  options   String
+  option   String
   votes     Int      @default(0)
   createdAt DateTime @default(now())
   User      User?    @relation(fields: [userId], references: [id])

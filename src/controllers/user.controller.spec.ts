@@ -14,12 +14,12 @@ const newUser: CreateUserBody = {
 
 const OptionUser: CreateUserOptionsBody = {
   id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-  options: 'new option',
+  option: 'new option',
 };
 
 const changedOptionUser: CreateUserOptionsBody = {
   id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-  options: 'change option',
+  option: 'change option',
 };
 
 const newVote = {
@@ -76,7 +76,6 @@ describe('UserController', () => {
       const result = await userController.GetUser(id);
 
       expect(result.id).toEqual(id);
-      expect(result).toHaveBeenCalledTimes(1);
       expect(typeof result.id).toBe('string');
     });
 
@@ -90,12 +89,11 @@ describe('UserController', () => {
 
   describe('create option controller', () => {
     it('should create a new option', async () => {
-      const result = await userController.AddOptionUser(newUser.id, OptionUser);
+      const result = await userController.AddOptionUser(OptionUser);
 
       expect(result).toEqual(OptionUser);
-      expect(result).toHaveBeenCalledTimes(1);
       expect(typeof newUser.id).toBe('string');
-      expect(typeof OptionUser.options).toBe('string');
+      expect(typeof OptionUser.option).toBe('string');
     });
 
     it('should not create a new user', async () => {
@@ -116,7 +114,6 @@ describe('UserController', () => {
       );
 
       expect(result).toEqual(changedOptionUser);
-      expect(result).toHaveBeenCalledTimes(1);
     });
 
     it('should not change the option', async () => {
