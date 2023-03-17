@@ -28,21 +28,19 @@ export class UserController {
 
   @Post('CreateOption')
   async AddOptionUser(
-    // @Param('userId') userId: string,
     @Body() body: CreateUserOptionsBody,
   ) {
     const { option, id } = body;
     return await this.userRepository.AddOptionUser(option, id);
   }
 
-  @Put('ChangeUserOption/:userId')
+  @Put('ChangeUserOption')
   async ChangeOptionUser(
-    @Param('userId') userId: string,
     @Body() body: CreateUserOptionsBody,
   ) {
     const { option, id } = body;
 
-    return await this.userRepository.ChangeOptionUser(option, userId, id);
+    return await this.userRepository.ChangeOptionUser(option, id);
   }
 
   @Delete('RemoveUserOption/:id')
@@ -53,10 +51,5 @@ export class UserController {
   @Put('vote/:id')
   async IncrementCounterUser(@Param('id') id: string) {
     return await this.userRepository.IncrementCounterUser(id);
-  }
-
-  @Get('test')
-  test() {
-    return 'test';
   }
 }
