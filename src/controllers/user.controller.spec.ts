@@ -72,11 +72,11 @@ describe('UserController', () => {
 
   describe('create option controller', () => {
     it('should create a new option', async () => {
-      const result = await userController.AddOptionUser(newUser.id, OptionUser);
+      const result = await userController.AddOptionUser(OptionUser);
 
       expect(result).toEqual(OptionUser);
       expect(typeof newUser.id).toBe('string');
-      expect(typeof OptionUser.options).toBe('string');
+      expect(typeof OptionUser.option).toBe('string');
     });
 
     it('should not create a new user', async () => {
@@ -125,7 +125,7 @@ describe('UserController', () => {
 
   describe('increment counter controller', () => {
     it('should by 1 the votes options', async () => {
-      const result = await userController.IncrementCounterUser(newUser.id);
+      const result = await userController.IncrementCounterUser(newVote);
 
       expect(result).toEqual(newVote);
       expect(typeof newVote.votes).toBe('number');

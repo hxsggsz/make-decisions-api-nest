@@ -11,15 +11,16 @@ export const newUser: CreateUserBody = {
 
 export const OptionUser: CreateUserOptionsBody = {
   id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-  options: 'new option',
+  option: 'new option',
 };
 
 export const changedOptionUser: CreateUserOptionsBody = {
   id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
-  options: 'change option',
+  option: 'change option',
 };
 
 export const newVote = {
   id: 'de35cc31-1203-4a53-a09b-0ae21e27c7d0',
   votes: 1,
+  option: 'change option',
 };
