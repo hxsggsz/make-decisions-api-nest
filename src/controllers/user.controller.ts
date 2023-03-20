@@ -26,11 +26,12 @@ export class UserController {
     return await this.userRepository.CreateUser(id);
   }
 
-  @Post('CreateOption')
+  @Post('CreateOption/:id')
   async AddOptionUser(
+    @Param('id') id: string,
     @Body() body: CreateUserOptionsBody,
   ) {
-    const { option, id } = body;
+    const { option } = body;
     return await this.userRepository.AddOptionUser(option, id);
   }
 
@@ -43,15 +44,13 @@ export class UserController {
     return await this.userRepository.ChangeOptionUser(option, id);
   }
 
-  @Delete('RemoveUserOption')
-  async RemoveOptionUser(@Body() body: CreateUserOptionsBody) {
-    const { id } = body;
+  @Delete('RemoveUserOption/:id')
+  async RemoveOptionUser(@Param('id') id: string) {
     return await this.userRepository.RemoveOptionUser(id);
   }
 
-  @Put('Vote')
-  async IncrementCounterUser(@Body() body: CreateUserOptionsBody) {
-    const { id } = body;
+  @Put('Vote/:id')
+  async IncrementCounterUser(@Param('id') id: string) {
     return await this.userRepository.IncrementCounterUser(id);
   }
 }
