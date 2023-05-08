@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
-import { CreateUserBody } from './create-user-body';
 
 export class CreateUserOptionsBody {
   @IsUUID()
@@ -8,6 +7,6 @@ export class CreateUserOptionsBody {
 
   @IsString()
   @IsNotEmpty()
-  @Length(5, 50)
+  @Length(5, 45)
   option: string;
 }
