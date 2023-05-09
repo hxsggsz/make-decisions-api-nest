@@ -22,7 +22,7 @@ export class PrismaUserService {
       include: {
         options: {
           orderBy: {
-            createdAt: 'asc',
+            createdAt: 'desc',
           },
         },
       },
