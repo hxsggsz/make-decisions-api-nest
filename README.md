@@ -1,5 +1,7 @@
 > <h1 align="center">make decisions API</h1>
 >
+> ✅ Status: Concluído
+>
 > # O que é essa API?
 >
 > essa API é para um projeto meu, o objetivo dela é realizar um CRUD em uma to-do list.
