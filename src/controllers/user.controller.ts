@@ -36,9 +36,7 @@ export class UserController {
   }
 
   @Put('ChangeUserOption')
-  async ChangeOptionUser(
-    @Body() body: CreateUserOptionsBody,
-  ) {
+  async ChangeOptionUser(@Body() body: CreateUserOptionsBody) {
     const { option, id } = body;
 
     return await this.userRepository.ChangeOptionUser(option, id);
